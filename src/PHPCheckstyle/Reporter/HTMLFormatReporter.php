@@ -13,9 +13,11 @@ class HTMLFormatReporter extends Reporter {
 	private $fileDetail = ''; // The list of checks in error for the current file
 	private $nbfiles = 0; // Total number of files scanned
 	private $fileInError = false; // Is the current file in error
-	private $nbfilesError = 0; // Number of files containing an erro
+	private $nbfilesError = 0; // Number of files containing an error
 	private $nbErrors = 0; // Total number of errors
+	private $nbLevelErrors = 0; // Total number of level errors
 	private $fileErrors = 0; // Number of errors in the current file
+	private $fileLevelErrors = 0; // Number of errors with level "error" in the current file
 	private $previousFile = '';
 
 	private $writeMode = 'w'; // "write" - ensures a new file is created.
@@ -57,6 +59,7 @@ class HTMLFormatReporter extends Reporter {
 		$values = array();
 		$values['%%nb_files%%'] = $this->nbfiles - 1;
 		$values['%%nb_files_error%%'] = $this->nbfilesError;
+		$values['%%nb_level_error%%'] = $this->nbLevelErrors;
 		$values['%%nb_total_errors%%'] = $this->nbErrors;
 		$values['%%nb_timestamp%%'] = date('Y-m-d H:i:s');
 		$this->writeFragment($this->_fillTemplate($summaryTmpl, $values));
@@ -146,6 +149,8 @@ class HTMLFormatReporter extends Reporter {
 				$values = array();
 				$values['%%filepath%%'] = $this->previousFile;
 				$values['%%file_errors%%'] = $this->fileErrors;
+				$values['%%file_level_errors%%'] = $this->fileLevelErrors > 0 ?
+                    '<strong style="color:red">&#10006; ('.$this->fileLevelErrors.')</strong>' : '<strong style="color:green">&#10003;</strong>' ;
 				$fileBody = $this->_fillTemplate($fileBody, $values);
 				$this->files .= $fileBody;
 			}
@@ -163,6 +168,7 @@ class HTMLFormatReporter extends Reporter {
 		$this->previousFile = $phpFile;
 		$this->fileDetail = '';
 		$this->fileErrors = 0;
+		$this->fileLevelErrors = 0;
 		$this->fileInError = false;
 	}
 
@@ -179,6 +185,11 @@ class HTMLFormatReporter extends Reporter {
 	 *        	the severity level
 	 */
 	public function writeError($line, $check, $message, $level = WARNING) {
+
+	    if ($level === ERROR) {
+            $this->nbLevelErrors++;
+            $this->fileLevelErrors++;
+        }
 
 		// Update the counters
 		$this->nbErrors ++;
