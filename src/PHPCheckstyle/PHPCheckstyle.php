@@ -2943,7 +2943,7 @@ class PHPCheckstyle {
 		if ($this->_isActive('checkWhiteSpaceBefore')) {
 			if (!$this->_config->isException('checkWhiteSpaceBefore', $text)) {
 				if (!$this->tokenizer->checkPreviousToken(T_WHITESPACE)
-                    && !$this->tokenizer->checkCurrentToken(T_BREAK)) {
+                    && !$this->tokenizer->checkCurrentToken(T_EMPTY)) {
 					$msg = $this->_getMessage('SPACE_BEFORE_TOKEN', $text);
 					$this->_writeError('checkWhiteSpaceBefore', $msg);
 				}
