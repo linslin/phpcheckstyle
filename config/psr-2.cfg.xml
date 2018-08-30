@@ -86,7 +86,7 @@
 		level="error" />
 
 	<!-- File Naming -->
-	<test name="fileNaming" regexp="/^[0-9a-zA-Z][a-zA-Z0-9._]*$/" level="error" />
+	<test name="fileNaming" regexp="/^[0-9a-zA-Z\-][a-zA-Z0-9._\-]*$/" level="error" />
 
 	<!-- Short variable names -->
 	<test name="localScopeVariableLength">
