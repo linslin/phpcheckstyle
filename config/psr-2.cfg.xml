@@ -144,7 +144,7 @@
 	<!-- **************** -->
 
 	<!-- Tests to make sure that a line does not contain the tab character. -->
-	<test name="indentation">  <!-- noTabs -->
+	<test name="indentation" level="error">  <!-- noTabs -->
 		<property name="type" value="spaces" /> <!-- tabs or spaces -->
 		<property name="number" value="4" /> <!-- number of spaces if type = spaces -->
 	</test>
