@@ -1750,10 +1750,6 @@ class PHPCheckstyle {
 	 *        	the name of the function.
 	 */
 	private function _processFunctionCall($text) {
-		if (strtolower($text) === "define") {
-			$this->_constantDef = true;
-		}
-
 		if ($this->tokenizer->checkNextValidToken(T_PARENTHESIS_OPEN)) {
 			// ASSUMPTION:that T_STRING followed by "(" is a function call
 			$this->_inFuncCall = true;
@@ -1779,6 +1775,11 @@ class PHPCheckstyle {
 
 				// Detect replaced functions
 				$this->_checkReplacements($text);
+
+				// Check if this is a constant define() function
+				if (strtolower($text) === "define") {
+					$this->_constantDef = true;
+				}
 			}
 
 			// Detect an @ before the function call
